@@ -1,7 +1,7 @@
 package com.androidexam.cafemanager;
 
 public class HelperClass {
-    String name, email, username, password;
+    String name, email,role, username, password;
 
     public String getName() {
         return name;
@@ -17,6 +17,14 @@ public class HelperClass {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getUsername() {
@@ -35,9 +43,12 @@ public class HelperClass {
         this.password = password;
     }
 
-    public HelperClass(String name, String email, String username, String password) {
+
+
+    public HelperClass(String name, String email,String role, String username, String password) {
         this.name = name;
         this.email = email;
+        this.role = role;
         this.username = username;
         this.password = password;
     }

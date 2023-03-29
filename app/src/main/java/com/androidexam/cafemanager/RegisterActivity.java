@@ -16,7 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText signupName, signupEmail, signupUsername, signupPassword;
+    EditText signupName, signupEmail, signupUsername, signupPassword , signupRole;
     Button loginRedirectText;
     Button signupButton;
     FirebaseDatabase database;
@@ -30,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         signupName = findViewById(R.id.signup_name);
         signupEmail = findViewById(R.id.signup_Email);
+        signupRole = findViewById(R.id.signup_role);
         signupUsername = findViewById(R.id.signup_user);
         signupPassword = findViewById(R.id.signup_password);
         signupButton = findViewById(R.id.btnSignup);
@@ -44,13 +45,14 @@ public class RegisterActivity extends AppCompatActivity {
 
                 String name = signupName.getText().toString();
                 String email = signupEmail.getText().toString();
+                String role = signupRole.getText().toString();
                 String username = signupUsername.getText().toString();
                 String password = signupPassword.getText().toString();
 
-                HelperClass helperClass = new HelperClass(name, email, username, password);
+                HelperClass helperClass = new HelperClass(name, email,role, username, password);
                 reference.child(username).setValue(helperClass);
 
-                Toast.makeText(RegisterActivity.this, "You have signup successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "Bạn đã đăng kí thành công!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
