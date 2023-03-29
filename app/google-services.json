@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "487085466296",
+    "project_id": "cafemanager-cf351",
+    "storage_bucket": "cafemanager-cf351.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487085466296:android:9820d1cb030270afadca4d",
+        "android_client_info": {
+          "package_name": "com.androidexam.cafemanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487085466296-124ggsq2nstu4qs1rlar48ti2idmon6v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAecIqYMiBtaV1hoyEfb5Ki42jYjG7BSzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487085466296-124ggsq2nstu4qs1rlar48ti2idmon6v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
