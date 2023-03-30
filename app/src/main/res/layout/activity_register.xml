@@ -125,47 +125,4 @@
         android:textStyle="bold" />
 
 
-
-
-<!--    <EditText-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textSize="20sp"-->
-<!--        android:id="@+id/signup_user"-->
-<!--        android:hint="Username"/>-->
-<!--    <EditText-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textSize="20sp"-->
-<!--        android:id="@+id/signup_name"-->
-<!--        android:hint="Name"/>-->
-<!--    <EditText-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textSize="20sp"-->
-<!--        android:id="@+id/signup_role"-->
-<!--        android:hint="Role"/>-->
-<!--    <EditText-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textSize="20sp"-->
-<!--        android:id="@+id/signup_Email"-->
-<!--        android:hint="Email"/>-->
-<!--    <EditText-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textSize="20sp"-->
-<!--        android:id="@+id/signup_password"-->
-<!--        android:hint="Password"/>-->
-<!--    <Button-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Sign up"-->
-<!--        android:id="@+id/btnSignup"/>-->
-<!--    <Button-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Sign in"-->
-<!--        android:id="@+id/btnSignin"/>-->
-
 </LinearLayout>
