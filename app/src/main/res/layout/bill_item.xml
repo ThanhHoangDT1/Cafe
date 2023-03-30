@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="200sp"
+        android:layout_marginLeft="10sp"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mã đơn: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            ></TextView>
+        <TextView
+            android:layout_marginLeft="1sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="1"
+            android:textStyle="bold"
+            ></TextView>
+    </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="150000VND"></TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="180sp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_calendar_today_24"
+            ></ImageView>
+        <TextView
+            android:layout_marginLeft="1sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="10/2/2023"
+            android:textStyle="bold"
+            ></TextView>
+    </LinearLayout>
+        <TextView
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ĐÃ THANH TOÁN"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:background="@color/cardview_dark_background">
+
+        </TextView>
+
+
+</LinearLayout>
+</LinearLayout>
