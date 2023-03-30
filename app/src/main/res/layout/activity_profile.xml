@@ -42,6 +42,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:id="@+id/profileRole"
+        android:hint="Role"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
         android:id="@+id/profileUser"
         android:hint="Username"/>
     <EditText

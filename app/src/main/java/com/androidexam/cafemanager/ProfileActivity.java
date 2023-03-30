@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 public class ProfileActivity extends AppCompatActivity {
 
 
-    TextView profileName, profileEmail, profileUsername, profilePassword;
+    TextView profileName, profileEmail, profileUsername, profilePassword, profileRole;
     TextView titleName, titleUsername;
     Button editProfile;
 
@@ -32,6 +32,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         profileName = findViewById(R.id.profileName);
         profileEmail = findViewById(R.id.profileEmail);
+        profileRole = findViewById(R.id.profileRole);
         profileUsername = findViewById(R.id.profileUser);
         profilePassword = findViewById(R.id.profilePassword);
         titleName = findViewById(R.id.titleName);
@@ -55,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         String nameUser = intent.getStringExtra("name");
         String emailUser = intent.getStringExtra("email");
+        String roleUser = intent.getStringExtra("role");
         String usernameUser = intent.getStringExtra("username");
         String passwordUser = intent.getStringExtra("password");
 
@@ -62,6 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
         titleUsername.setText(usernameUser);
         profileName.setText(nameUser);
         profileEmail.setText(emailUser);
+        profileRole.setText(roleUser);
         profileUsername.setText(usernameUser);
         profilePassword.setText(passwordUser);
     }
@@ -71,6 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         String nameUser = intent.getStringExtra("name");
         String emailUser = intent.getStringExtra("email");
+        String roleUser = intent.getStringExtra("role");
         String usernameUser = intent.getStringExtra("username");
         String passwordUser = intent.getStringExtra("password");
 
@@ -78,6 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
         titleUsername.setText(usernameUser);
         profileName.setText(nameUser);
         profileEmail.setText(emailUser);
+        profileRole.setText(roleUser);
         profileUsername.setText(usernameUser);
         profilePassword.setText(passwordUser);
     }
@@ -95,6 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     String nameFromDB = snapshot.child(userUsername).child("name").getValue(String.class);
                     String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
+                    String roleFromDB = snapshot.child(userUsername).child("role").getValue(String.class);
                     String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
                     String passwordFromDB = snapshot.child(userUsername).child("password").getValue(String.class);
 
@@ -102,6 +108,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     intent.putExtra("name", nameFromDB);
                     intent.putExtra("email", emailFromDB);
+                    intent.putExtra("role", roleFromDB);
                     intent.putExtra("username", usernameFromDB);
                     intent.putExtra("password", passwordFromDB);
 

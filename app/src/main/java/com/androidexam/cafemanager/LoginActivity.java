@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     public Boolean validateUsername(){
         String val = loginUsername.getText().toString();
         if (val.isEmpty()){
-            loginUsername.setError("Username cannot be empty");
+            loginUsername.setError("Tên đăng nhập không được để trống");
             return false;
         } else {
             loginUsername.setError(null);
@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     public Boolean validatePassword(){
         String val = loginPassword.getText().toString();
         if (val.isEmpty()){
-            loginPassword.setError("Password cannot be empty");
+            loginPassword.setError("Mật khẩu không được để trống");
             return false;
         } else {
             loginPassword.setError(null);
@@ -98,22 +98,24 @@ public class LoginActivity extends AppCompatActivity {
 
                         String nameFromDB = snapshot.child(userUsername).child("name").getValue(String.class);
                         String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
+                        String roleFromDB = snapshot.child(userUsername).child("role").getValue(String.class);
                         String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
 
                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
 
                         intent.putExtra("name", nameFromDB);
                         intent.putExtra("email", emailFromDB);
+                        intent.putExtra("role", roleFromDB);
                         intent.putExtra("username", usernameFromDB);
                         intent.putExtra("password", passwordFromDB);
 
                         startActivity(intent);
                     } else {
-                        loginPassword.setError("Invalid Credentials");
+                        loginPassword.setError("Thông tin không hợp lệ");
                         loginPassword.requestFocus();
                     }
                 } else {
-                    loginUsername.setError("User does not exist");
+                    loginUsername.setError("Người dùng đã tồn tại!");
                     loginUsername.requestFocus();
                 }
             }

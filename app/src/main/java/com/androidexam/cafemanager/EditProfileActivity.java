@@ -20,9 +20,9 @@ import com.google.firebase.database.ValueEventListener;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    EditText editName, editEmail, editUsername, editPassword;
+    EditText editName, editEmail, editUsername, editPassword,editRole;
     Button saveButton;
-    String nameUser, emailUser, usernameUser, passwordUser;
+    String nameUser, emailUser, usernameUser, passwordUser,roleUser;
     DatabaseReference reference;
 
     @SuppressLint("MissingInflatedId")
@@ -35,6 +35,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         editName = findViewById(R.id.editName);
         editEmail = findViewById(R.id.editEmail);
+        editRole = findViewById(R.id.editRole);
         editUsername = findViewById(R.id.editUsername);
         editPassword = findViewById(R.id.editPassword);
         saveButton = findViewById(R.id.btnSave);
@@ -47,12 +48,12 @@ public class EditProfileActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isNameChanged() || isEmailChanged() || isPasswordChanged()) {
-                    Toast.makeText(EditProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                if (isNameChanged() || isEmailChanged() || isPasswordChanged() || isRoleChanged()) {
+                    Toast.makeText(EditProfileActivity.this, "Đã lưu", Toast.LENGTH_SHORT).show();
 
                     passDataProfile();
                 } else {
-                    Toast.makeText(EditProfileActivity.this, "No Changes Found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, "Không tìm thấy thay đổi", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -76,6 +77,15 @@ public class EditProfileActivity extends AppCompatActivity {
             return false;
         }
     }
+    public boolean isRoleChanged(){
+        if (!roleUser.equals(editName.getText().toString())){
+            reference.child(usernameUser).child("role").setValue(editRole.getText().toString());
+            roleUser = editRole.getText().toString();
+            return true;
+        } else{
+            return false;
+        }
+    }
 
     public boolean isPasswordChanged(){
         if (!passwordUser.equals(editPassword.getText().toString())){
@@ -92,11 +102,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
         nameUser = intent.getStringExtra("name");
         emailUser = intent.getStringExtra("email");
+        roleUser = intent.getStringExtra("role");
         usernameUser = intent.getStringExtra("username");
         passwordUser = intent.getStringExtra("password");
 
         editName.setText(nameUser);
         editEmail.setText(emailUser);
+        editRole.setText(roleUser);
         editUsername.setText(usernameUser);
         editPassword.setText(passwordUser);
     }
@@ -115,11 +127,13 @@ public class EditProfileActivity extends AppCompatActivity {
                     String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
                     String nameFromDB = snapshot.child(userUsername).child("name").getValue(String.class);
                     String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
+                    String roleFromDB = snapshot.child(userUsername).child("role").getValue(String.class);
                     String passwordFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
                     Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
 
                     intent.putExtra("name", nameFromDB);
                     intent.putExtra("email", emailFromDB);
+                    intent.putExtra("role", roleFromDB);
                     intent.putExtra("username", usernameFromDB);
                     intent.putExtra("password", passwordFromDB);
 
