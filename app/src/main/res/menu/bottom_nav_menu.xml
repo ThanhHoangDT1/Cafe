@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Trang chu"
+        />
+
+    <item
+        android:id="@+id/product"
+        android:icon="@drawable/baseline_production_quantity_limits_24"
+        android:title="San pham"/>
+
+    <item
+        android:id="@+id/card"
+        android:title="Gio hang"
+        android:icon="@drawable/baseline_shopping_cart_24"/>
+
+    <item
+        android:id="@+id/personal"
+        android:title="Ca nhan"
+        android:icon="@drawable/baseline_person_24"/>
+
+</menu>
