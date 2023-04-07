@@ -57,9 +57,6 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-
-
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -67,16 +64,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
-<<<<<<< HEAD
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
-=======
->>>>>>> cfd4f4852d459ecc579749575095e63aa03acee9
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

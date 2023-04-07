@@ -3,12 +3,13 @@ package com.androidexam.cafemanager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +32,6 @@ import java.util.ArrayList;
 
 public class AddProductActivity extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 1;
     private String idProduct;
     private Uri uriImage;
 
@@ -48,7 +48,8 @@ public class AddProductActivity extends AppCompatActivity {
         idProduct = intent.getStringExtra("idProduct");
 
         setDataSpinner();
-        if (idProduct != null) {
+
+        if (!TextUtils.isEmpty(idProduct)) {
             loadDataProduct();
             clickSaveEdit();
         } else {
@@ -84,7 +85,7 @@ public class AddProductActivity extends AppCompatActivity {
                 productsRef.child(id).setValue(newProduct);
                 if (uriImage != null) {
                     StorageReference imageProductRef = FirebaseStorage.getInstance().getReference().child("/imageProduct");
-                    StorageReference imageRef = imageProductRef.child(id+".jpg");
+                    StorageReference imageRef = imageProductRef.child(id + ".jpg");
                     UploadTask uploadTask = imageRef.putFile(uriImage);
 
                     // Add an OnSuccessListener to the upload task to get the download URL of the uploaded image
@@ -106,7 +107,7 @@ public class AddProductActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            Log.d("image",exception.toString());
+                            Log.d("image", exception.toString());
                         }
                     }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -152,19 +153,17 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     private void clickImage() {
-        binding.imgProduct.setOnClickListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, PICK_IMAGE_REQUEST);
-        });
-    }
+        ActivityResultLauncher<String> imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        uriImage = uri;
+                        Picasso.get().load(uri).into(binding.imgProduct);
+                    }
+                });
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            uriImage = data.getData();
-            binding.imgProduct.setImageURI(uriImage);
-        }
+        binding.imgProduct.setOnClickListener(view -> {
+            imagePickerLauncher.launch("image/*");
+        });
     }
 
 

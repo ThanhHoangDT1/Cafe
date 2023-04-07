@@ -6,38 +6,37 @@
     tools:context=".PersonalFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:gravity="center_horizontal"
-        >
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
+            android:background="@drawable/custom_edittext"
             app:cardCornerRadius="30dp"
-            app:cardElevation="20dp"
-            android:background="@drawable/custom_edittext">
+            app:cardElevation="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
                 android:padding="12dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hồ sơ"
-                    android:textSize="36dp"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
                     android:padding="10dp"
-                    android:textColor="@color/purple" />
+                    android:text="Hồ sơ"
+                    android:textAlignment="center"
+                    android:textColor="@color/purple"
+                    android:textSize="36dp"
+                    android:textStyle="bold" />
+
                 <ImageView
                     android:layout_width="70sp"
                     android:layout_height="70sp"
@@ -47,80 +46,80 @@
                 </ImageView>
 
                 <EditText
+                    android:id="@+id/PersonName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/PersonName"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/custom_edittext"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
                     android:drawablePadding="8dp"
                     android:hint="Tên đăng nhập"
                     android:padding="8dp"
                     android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="20dp"/>
+                    android:textColorHighlight="@color/cardview_dark_background" />
 
                 <EditText
+                    android:id="@+id/profileUser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/profileUser"
+                    android:layout_marginTop="15dp"
                     android:background="@drawable/custom_edittext"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
                     android:drawablePadding="8dp"
                     android:hint="Họ Tên"
                     android:padding="8dp"
                     android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="15dp"/>
+                    android:textColorHighlight="@color/cardview_dark_background" />
 
                 <EditText
+                    android:id="@+id/profileRole"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/profileRole"
+                    android:layout_marginTop="15dp"
                     android:background="@drawable/custom_edittext"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
                     android:drawablePadding="8dp"
                     android:hint="Chức vụ"
                     android:padding="8dp"
                     android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="15dp"/>
+                    android:textColorHighlight="@color/cardview_dark_background" />
 
                 <EditText
+                    android:id="@+id/PersonEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/PersonEmail"
+                    android:layout_marginTop="15dp"
                     android:background="@drawable/custom_edittext"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
                     android:drawablePadding="8dp"
                     android:hint="Email"
                     android:padding="8dp"
                     android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="15dp"/>
+                    android:textColorHighlight="@color/cardview_dark_background" />
 
                 <EditText
+                    android:id="@+id/profilePassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/profilePassword"
+                    android:layout_marginTop="15dp"
                     android:background="@drawable/custom_edittext"
                     android:drawableLeft="@drawable/ic_baseline_lock_24"
                     android:drawablePadding="8dp"
                     android:hint="Mật khẩu"
-                    android:padding="8dp"
                     android:inputType="textPassword"
+                    android:padding="8dp"
                     android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="15dp"/>
+                    android:textColorHighlight="@color/cardview_dark_background" />
 
                 <Button
+                    android:id="@+id/btnEdit"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:id="@+id/btnEdit"
-                    android:text="Sửa"
-                    android:textSize="18sp"
                     android:layout_marginTop="20dp"
                     android:backgroundTint="@color/purple"
-                    app:cornerRadius = "15dp"/>
+                    android:text="Sửa"
+                    android:textSize="18sp"
+                    app:cornerRadius="15dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

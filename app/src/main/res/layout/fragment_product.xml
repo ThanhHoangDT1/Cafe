@@ -5,17 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".ProductFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-<<<<<<< HEAD
-=======
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Sản phẩm" />
->>>>>>> cfd4f4852d459ecc579749575095e63aa03acee9
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recview"
+        android:id="@+id/rcv_products"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+
 </FrameLayout>
