@@ -21,7 +21,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     TextView profileName, profileEmail, profileUsername, profilePassword, profileRole;
-    TextView titleName, titleUsername;
+
     Button editProfile;
 
     @SuppressLint("MissingInflatedId")
@@ -35,8 +35,6 @@ public class ProfileActivity extends AppCompatActivity {
         profileRole = findViewById(R.id.profileRole);
         profileUsername = findViewById(R.id.profileUser);
         profilePassword = findViewById(R.id.profilePassword);
-        titleName = findViewById(R.id.titleName);
-        titleUsername = findViewById(R.id.titleUser);
         editProfile = findViewById(R.id.btnEdit);
 
         showUserData();
@@ -45,7 +43,8 @@ public class ProfileActivity extends AppCompatActivity {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                passUserData();
+                startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
+//                passUserData();
             }
         });
 
@@ -60,8 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
         String usernameUser = intent.getStringExtra("username");
         String passwordUser = intent.getStringExtra("password");
 
-        titleName.setText(nameUser);
-        titleUsername.setText(usernameUser);
+
         profileName.setText(nameUser);
         profileEmail.setText(emailUser);
         profileRole.setText(roleUser);
@@ -78,8 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
         String usernameUser = intent.getStringExtra("username");
         String passwordUser = intent.getStringExtra("password");
 
-        titleName.setText(nameUser);
-        titleUsername.setText(usernameUser);
+
         profileName.setText(nameUser);
         profileEmail.setText(emailUser);
         profileRole.setText(roleUser);

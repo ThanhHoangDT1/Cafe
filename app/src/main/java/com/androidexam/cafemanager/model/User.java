@@ -1,6 +1,6 @@
-package com.androidexam.cafemanager;
+package com.androidexam.cafemanager.model;
 
-public class HelperClass {
+public class User {
     String name, email,role, username, password;
 
     public String getName() {
@@ -45,7 +45,7 @@ public class HelperClass {
 
 
 
-    public HelperClass(String name, String email,String role, String username, String password) {
+    public User(String name, String email,String role, String username, String password) {
         this.name = name;
         this.email = email;
         this.role = role;
@@ -53,6 +53,6 @@ public class HelperClass {
         this.password = password;
     }
 
-    public HelperClass() {
+    public User() {
     }
 }
