@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.personal:
                     replaceFragment(new PersonalFragment());
+
                     break;
             }
 

@@ -11,18 +11,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidexam.cafemanager.model.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
     EditText signupName, signupEmail, signupUsername, signupPassword , signupRole;
-    Button loginRedirectText;
+    TextView loginRedirectText;
     Button signupButton;
     FirebaseDatabase database;
     DatabaseReference reference;
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = signupUsername.getText().toString();
                 String password = signupPassword.getText().toString();
 
-                HelperClass helperClass = new HelperClass(name, email,role, username, password);
-                reference.child(username).setValue(helperClass);
+                User user = new User(name, email,role, username, password);
+                reference.child(username).setValue(user);
 
                 Toast.makeText(RegisterActivity.this, "Bạn đã đăng kí thành công!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);

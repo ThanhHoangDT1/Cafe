@@ -3,12 +3,16 @@ package com.androidexam.cafemanager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     TextView signupRedirectText;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,22 +40,16 @@ public class LoginActivity extends AppCompatActivity {
         signupRedirectText = findViewById(R.id.btnSignup);
         loginButton = findViewById(R.id.btnSignin);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        loginButton.setOnClickListener(view -> {
                 if (!validateUsername() | !validatePassword()){
 
                 } else {
                     checkUser();
                 }
-            }
         });
-        signupRedirectText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        signupRedirectText.setOnClickListener(view -> {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
-            }
         });
     }
 
@@ -83,6 +82,10 @@ public class LoginActivity extends AppCompatActivity {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
         Query checkUserDatabase = reference.orderByChild("username").equalTo(userUsername);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
         checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -94,12 +97,18 @@ public class LoginActivity extends AppCompatActivity {
                     if (passwordFromDB.equals(userPassword)){
                         loginUsername.setError(null);
 
+                        //pass data use SharePreference
+                        String idFromDB = snapshot.child(userUsername).getKey(); // Lấy ID từ snapshot
+                        editor.putString("userId", idFromDB);
+                        editor.apply();
+
+
                         //Pass the data using intent
 
-                        String nameFromDB = snapshot.child(userUsername).child("name").getValue(String.class);
-                        String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
-                        String roleFromDB = snapshot.child(userUsername).child("role").getValue(String.class);
-                        String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
+//                        String nameFromDB = snapshot.child(userUsername).child("name").getValue(String.class);
+//                        String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
+//                        String roleFromDB = snapshot.child(userUsername).child("role").getValue(String.class);
+//                        String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
@@ -115,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                         loginPassword.requestFocus();
                     }
                 } else {
-                    loginUsername.setError("Người dùng đã tồn tại!");
+                    loginUsername.setError("Thông tin không chính xác!");
                     loginUsername.requestFocus();
                 }
             }
