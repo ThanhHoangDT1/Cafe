@@ -49,7 +49,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/PersonName"
+                    android:id="@+id/pfUser"
                     android:background="@drawable/custom_edittext"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
                     android:drawablePadding="8dp"
@@ -62,7 +62,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/profileUser"
+                    android:id="@+id/pfName"
                     android:background="@drawable/custom_edittext"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
                     android:drawablePadding="8dp"
@@ -75,7 +75,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/profileRole"
+                    android:id="@+id/pfRole"
                     android:background="@drawable/custom_edittext"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
                     android:drawablePadding="8dp"
@@ -88,7 +88,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/PersonEmail"
+                    android:id="@+id/pfEmail"
                     android:background="@drawable/custom_edittext"
                     android:drawableLeft="@drawable/ic_baseline_person_24"
                     android:drawablePadding="8dp"
@@ -101,7 +101,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/profilePassword"
+                    android:id="@+id/pfPassword"
                     android:background="@drawable/custom_edittext"
                     android:drawableLeft="@drawable/ic_baseline_lock_24"
                     android:drawablePadding="8dp"

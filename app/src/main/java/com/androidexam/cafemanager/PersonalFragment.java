@@ -1,17 +1,18 @@
 package com.androidexam.cafemanager;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,16 +20,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PersonalFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class PersonalFragment extends Fragment {
-    private SharedPreferences sharedPreferences;
 
-    EditText Email ,Name;
-    
+public class PersonalFragment extends Fragment {
+
+
+    private EditText Email ,Name,Role,User,Password;
+    private DatabaseReference mDatabase;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -72,70 +71,45 @@ public class PersonalFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_personal, container, false);
+        View view = inflater.inflate(R.layout.fragment_personal, container, false);
 
-        
-        // Lấy ID của người dùng từ SharedPreferences
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String userId = sharedPreferences.getString("userId", "");
+        Email = view.findViewById(R.id.pfEmail);
+        Name = view.findViewById(R.id.pfName);
+        Role = view.findViewById(R.id.pfRole);
+        User = view.findViewById(R.id.pfUser);
+        Password = view.findViewById(R.id.pfPassword);
 
-        // Tham chiếu đến nút chứa thông tin của người dùng
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
+        String uid = sharedPreferences.getString("uid", "");
 
-        // Lắng nghe sự kiện khi dữ liệu từ cơ sở dữ liệu được trả về
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @SuppressLint("MissingInflatedId")
+
+
+        // Get user information from database using uid
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid);
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Lấy thông tin người dùng từ snapshot
-                String userName = dataSnapshot.child("name").getValue(String.class);
-                String userEmail = dataSnapshot.child("email").getValue(String.class);
-
-                // Hiển thị thông tin người dùng lên giao diện
-                Name = view.findViewById(R.id.PersonName);
-                Email = view.findViewById(R.id.PersonEmail);
-                Name.setText(userName);
-                Email.setText(userEmail);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String username = snapshot.child("username").getValue(String.class);
+                String email = snapshot.child("email").getValue(String.class);
+                String name = snapshot.child("name").getValue(String.class);
+                String role = snapshot.child("role").getValue(String.class);
+                String password = snapshot.child("password").getValue(String.class);
+                User.setText(username);
+                Email.setText(email);
+                Name.setText(name);
+                Role.setText(role);
+                Password.setText(password);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Xử lý lỗi
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
+
+
         return view;
-
-//        inflater.inflate(R.layout.fragment_personal, container, false);
-
-//        // Lấy SharedPreferences và các giá trị của nó
-//        sharedPreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-//
-//        String name = sharedPreferences.getString("name", "");
-//        String username = sharedPreferences.getString("username", "");
-//        String role = sharedPreferences.getString("role", "");
-//        String email = sharedPreferences.getString("email", "");
-//        String password = sharedPreferences.getString("password", "");
-//
-//        // Đặt các giá trị vào các EditText trong fragment_personal.xml
-//        EditText profileName = view.findViewById(R.id.profileName);
-//        profileName.setText(name);
-//
-//        EditText profileUser = view.findViewById(R.id.profileUser);
-//        profileUser.setText(username);
-//
-//        EditText profileRole = view.findViewById(R.id.profileRole);
-//        profileRole.setText(role);
-//
-//        EditText profileEmail = view.findViewById(R.id.profileEmail);
-//        profileEmail.setText(email);
-//
-//        EditText profilePassword = view.findViewById(R.id.profilePassword);
-//        profileEmail.setText(password);
-//
-//        return view;
     }
-
 
 
 

@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -82,8 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
         Query checkUserDatabase = reference.orderByChild("username").equalTo(userUsername);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
 
 
         checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -97,28 +97,19 @@ public class LoginActivity extends AppCompatActivity {
                     if (passwordFromDB.equals(userPassword)){
                         loginUsername.setError(null);
 
-                        //pass data use SharePreference
-                        String idFromDB = snapshot.child(userUsername).getKey(); // Lấy ID từ snapshot
-                        editor.putString("userId", idFromDB);
+                        // Save user id to SharedPreferences
+                        String uid = snapshot.child(userUsername).getKey();
+                        SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("uid", uid);
                         editor.apply();
 
-
-                        //Pass the data using intent
-
-//                        String nameFromDB = snapshot.child(userUsername).child("name").getValue(String.class);
-//                        String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
-//                        String roleFromDB = snapshot.child(userUsername).child("role").getValue(String.class);
-//                        String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
-
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
-//                        intent.putExtra("name", nameFromDB);
-//                        intent.putExtra("email", emailFromDB);
-//                        intent.putExtra("role", roleFromDB);
-//                        intent.putExtra("username", usernameFromDB);
-//                        intent.putExtra("password", passwordFromDB);
-
                         startActivity(intent);
+
+
+
+
                     } else {
                         loginPassword.setError("Thông tin không hợp lệ");
                         loginPassword.requestFocus();
