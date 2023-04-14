@@ -129,15 +129,15 @@ public class EditProfileActivity extends AppCompatActivity {
                     String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
                     String roleFromDB = snapshot.child(userUsername).child("role").getValue(String.class);
                     String passwordFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
-                    Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
+                    //Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
 
-                    intent.putExtra("name", nameFromDB);
-                    intent.putExtra("email", emailFromDB);
-                    intent.putExtra("role", roleFromDB);
-                    intent.putExtra("username", usernameFromDB);
-                    intent.putExtra("password", passwordFromDB);
-
-                    startActivity(intent);
+//                    intent.putExtra("name", nameFromDB);
+//                    intent.putExtra("email", emailFromDB);
+//                    intent.putExtra("role", roleFromDB);
+//                    intent.putExtra("username", usernameFromDB);
+//                    intent.putExtra("password", passwordFromDB);
+//
+//                    startActivity(intent);
                 }
             }
 
