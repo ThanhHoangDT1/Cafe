@@ -19,8 +19,11 @@ import com.androidexam.cafemanager.model.Product;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -76,6 +79,7 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     private void clickAdd() {
+
         binding.btnAdd.setOnClickListener(view -> {
             Product newProduct = getProduct();
             if (newProduct != null) {
@@ -175,5 +179,6 @@ public class AddProductActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, category);
         binding.spCategory.setAdapter(adapter);
     }
+
 
 }

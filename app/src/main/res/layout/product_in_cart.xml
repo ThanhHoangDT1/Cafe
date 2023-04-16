@@ -1,81 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemCoffee"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:layout_margin="5dp"
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    app:cardCornerRadius="6dp">
+
+    <LinearLayout
+        android:id="@+id/llContentCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <ImageView
+            android:id="@+id/imgCoffeeImageCart"
+            android:layout_width="40dp"
+            android:layout_height="120dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1.3"
+            android:padding="6dp"
+            android:scaleType="centerCrop"
+            />
+
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="3dp"
-            android:orientation="horizontal">
+            android:layout_weight="3.6"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtCoffeeNameCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:padding="5dp"
+                android:text="coffee"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtPriceCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtCoffeeNameCart"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:padding="6dp"
+                android:text="300/-"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1">
 
             <ImageView
-                android:id="@+id/product_image"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:padding="@dimen/_5sdp"
-                android:scaleType="centerCrop"
-                 />
-
-            <LinearLayout
-                android:layout_width="190dp"
+                android:id="@+id/btnMinusQuantity"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/_15sdp"
-                android:paddingTop="@dimen/_10sdp">
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="25dp"
+                android:src="@drawable/ic_baseline_indeterminate_check_box_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:tint="@color/purple_500" />
 
+            <TextView
+                android:id="@+id/txtQuantityCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="27dp"
+                android:text="1"
+                android:textColor="@color/purple_500"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
-                <TextView
-                    android:id="@+id/product_name"
-                    android:layout_width="170dp"
-                    android:layout_height="match_parent"
-                    android:text="@string/product"
-                    android:textAlignment="textStart"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/btnPlusQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="25dp"
+                android:src="@drawable/ic_baseline_add_box_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:tint="@color/purple_500" />
 
+            <ImageView
+                android:id="@+id/btnDeleteItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_baseline_cancel_24"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/purple_500" />
 
-                <TextView
-                    android:id="@+id/product_price"
-                    android:layout_width="170dp"
-                    android:layout_height="match_parent"
-                    android:paddingTop="@dimen/_5sdp"
-                    android:singleLine="true"
-                    android:text="@string/price"
-                    android:textAlignment="textStart"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-            <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-                android:layout_gravity="center"
-            android:orientation="horizontal">
-                <Button
-                    android:id="@+id/sub"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:text="-"/>
-                <TextView
-                    android:id="@+id/soluong"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1"
-                    android:textSize="20sp"
-                    />
-                <Button
-                    android:id="@+id/add"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:text="+"/>
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-    </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,64 +1,97 @@
 package com.androidexam.cafemanager;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.androidexam.cafemanager.adapter.CartAdapter;
+import com.androidexam.cafemanager.model.Product;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class CardFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public CardFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CardFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CardFragment newInstance(String param1, String param2) {
-        CardFragment fragment = new CardFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private CartAdapter adapter;
+    private DatabaseReference mDatabase;
+    private RecyclerView recyclerView;
+    private List<Product> cartItemList;
+    private ValueEventListener cartListener;
+    private String userId;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        // Khởi tạo DatabaseReference cho Firebase Realtime Database
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        // Lấy SharedPreferences để lấy userId đã được lưu trữ khi đăng nhập
+        sharedPreferences = requireActivity().getSharedPreferences("USER", MODE_PRIVATE);
+        userId = sharedPreferences.getString("uid", "");
+        mDatabase = mDatabase.child("users").child(userId).child("cart");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_card, container, false);
+        View view = inflater.inflate(R.layout.fragment_card, container, false);
+
+        recyclerView = view.findViewById(R.id.list_pro_in_cart);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new CartAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        cartListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                cartItemList = new ArrayList<>();
+                for (DataSnapshot productSnapshot: dataSnapshot.getChildren()) {
+                    Product item = productSnapshot.getValue(Product.class);
+                    cartItemList.add(item);
+                }
+                adapter.setCartItems(cartItemList);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu có
+            }
+        };
+        mDatabase.addValueEventListener(cartListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (cartListener != null) {
+            mDatabase.removeEventListener(cartListener);
+        }
     }
 }

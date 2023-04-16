@@ -38,5 +38,10 @@
             android:text="Gia San Pham"
             android:textColor="#F44336"
             android:textSize="14sp" />
+        <Button
+            android:id="@+id/btn_buy"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="+" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

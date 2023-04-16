@@ -7,17 +7,22 @@ public class Product {
     private long price;
     private String description;
     private String category;
+    private long quantity;
 
     public Product() {
     }
 
-    public Product(String id, String name, String urlImage, long price, String description, String category) {
+    public Product(String id, long quantity,String name, String urlImage, long price, String description, String category) {
         this.id = id;
         this.name = name;
         this.urlImage = urlImage;
+        this.quantity = quantity;
         this.price = price;
         this.description = description;
         this.category = category;
+    }
+
+    public Product(String id, String name, long price, int i) {
     }
 
     public String getId() {
@@ -47,9 +52,15 @@ public class Product {
     public long getPrice() {
         return price;
     }
+    public long getquantity() {
+        return quantity;
+    }
 
     public void setPrice(long price) {
         this.price = price;
+    }
+    public void setquantity(long quantity) {
+        this.quantity = quantity;
     }
 
     public String getDescription() {
