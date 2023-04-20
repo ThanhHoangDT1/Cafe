@@ -3,6 +3,7 @@ package com.androidexam.cafemanager;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ public class PersonalFragment extends Fragment {
 
     private EditText Email ,Name,Role,User,Password;
     private DatabaseReference mDatabase;
+    private Button btnEdit;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -80,11 +83,17 @@ public class PersonalFragment extends Fragment {
         Role = view.findViewById(R.id.pfRole);
         User = view.findViewById(R.id.pfUser);
         Password = view.findViewById(R.id.pfPassword);
+        btnEdit = view.findViewById(R.id.btnEdit);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
         String uid = sharedPreferences.getString("uid", "");
 
-
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),EditProfileActivity.class));
+            }
+        });
 
         // Get user information from database using uid
         mDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid);
