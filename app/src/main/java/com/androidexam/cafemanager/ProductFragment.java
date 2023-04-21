@@ -1,23 +1,21 @@
 package com.androidexam.cafemanager;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.androidexam.cafemanager.adapter.ProductAdapter;
+import com.androidexam.cafemanager.databinding.FragmentProductBinding;
 import com.androidexam.cafemanager.model.Product;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,47 +25,41 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ProductFragment extends Fragment {
 
-    private DatabaseReference mDatabase;
-    private RecyclerView recyclerView;
-    private List<Product> productList;
+    private FragmentProductBinding binding;
     private ProductAdapter productAdapter;
+    private List<Product> productList;
+    private DatabaseReference databaseRef;
 
-    public ProductFragment() {
-        // Required empty public constructor
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_product, container, false);
-
-        // Get the reference to the database
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Products");
-
-        // Initialize the RecyclerView
-        recyclerView = view.findViewById(R.id.rcv_products);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding = FragmentProductBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        binding.rcvProducts.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         productList = new ArrayList<>();
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
         String uid = sharedPreferences.getString("uid", "");
 
-        productAdapter = new ProductAdapter(productList, uid);
+        productAdapter = new ProductAdapter(productList,uid);
+        binding.rcvProducts.setAdapter(productAdapter);
 
-        recyclerView.setAdapter(productAdapter);
 
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Add the event listener to get the list of products from the database
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        databaseRef = FirebaseDatabase.getInstance().getReference("Products");
+        databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 productList.clear();
                 for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                     Product product = productSnapshot.getValue(Product.class);
@@ -77,9 +69,19 @@ public class ProductFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle the error here
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+
+        return view;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
 }

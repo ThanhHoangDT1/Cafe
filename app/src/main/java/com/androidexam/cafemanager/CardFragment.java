@@ -31,10 +31,11 @@ import java.util.List;
 public class CardFragment extends Fragment {
 
     private CartAdapter adapter;
-    private DatabaseReference mDatabase;
+
     private RecyclerView recyclerView;
     private List<Product> cartItemList;
     private ValueEventListener cartListener;
+    private DatabaseReference mDatabase;
     private String userId;
     private SharedPreferences sharedPreferences;
 
@@ -58,7 +59,7 @@ public class CardFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.list_pro_in_cart);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new CartAdapter(new ArrayList<>());
+        adapter = new CartAdapter(requireContext(),new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         return view;

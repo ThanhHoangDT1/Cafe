@@ -107,6 +107,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             });
         }
 
+        public void removeProduct(Product product) {
+            productList.remove(product);
+            notifyDataSetChanged();
+        }
+
         public void bind(final Product item, boolean isSelected) {
             tvNamePro.setText(item.getName());
             // categoryTextView.setText(item.getCategory());
@@ -124,19 +129,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     if (btnBuy.isSelected()) {
                         btnBuy.setSelected(false);
                         selectedItems.remove(item.getId());
-
-                        // Xóa sản phẩm khỏi giỏ hàng của người dùng đó
-                        mDatabase.child("users").child(userId).child("cart").child(item.getId()).removeValue();
                     } else {
                         btnBuy.setSelected(true);
                         selectedItems.add(item.getId());
+                        removeProduct(item); // Xóa sản phẩm khỏi danh sách sản phẩm
 
                         // Thêm sản phẩm vào giỏ hàng của người dùng đó
                         DatabaseReference cartRef = mDatabase.child("users").child(userId).child("cart").child(item.getId());
                         cartRef.child("name").setValue(item.getName());
-                        cartRef.child("quantity").setValue(item.getquantity()+1);
+                        cartRef.child("quantity").setValue(item.getquantity());
                         cartRef.child("price").setValue(item.getPrice());
-                        cartRef.child("imageUrl").setValue(item.getUrlImage());
+
+                        cartRef.child("sum").setValue(item.getSum());
+                        cartRef.child("urlImage").setValue(item.getUrlImage());
                     }
                 }
             });

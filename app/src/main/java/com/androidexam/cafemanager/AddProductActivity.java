@@ -54,7 +54,8 @@ public class AddProductActivity extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(idProduct)) {
             loadDataProduct();
-            clickSaveEdit();
+//            clickSaveEdit();
+            clickAdd();
         } else {
             clickAdd();
         }
@@ -133,6 +134,8 @@ public class AddProductActivity extends AppCompatActivity {
             newProduct.setName(binding.etName.getText().toString());
             newProduct.setCategory(binding.spCategory.getSelectedItem().toString());
             newProduct.setPrice(Integer.parseInt(binding.etPrice.getText().toString()));
+            newProduct.setSum();
+            newProduct.setquantity();
             newProduct.setDescription(binding.etDescription.getText().toString());
             return newProduct;
         }
