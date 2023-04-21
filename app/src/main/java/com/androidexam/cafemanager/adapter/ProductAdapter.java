@@ -1,54 +1,44 @@
 package com.androidexam.cafemanager.adapter;
 
-import static android.app.PendingIntent.getActivity;
-import static android.content.Context.MODE_PRIVATE;
-import android.content.SharedPreferences;
-import android.content.Context;
-
-
-import androidx.fragment.app.Fragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidexam.cafemanager.AddProductActivity;
 import com.androidexam.cafemanager.R;
+import com.androidexam.cafemanager.model.OderDetail;
 import com.androidexam.cafemanager.model.Product;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
-    private DatabaseReference mDatabase;
 
     private List<Product> productList;
-    private static List<String> selectedItems; // danh sách các ID của các món nước được chọn
-    private String userId; // id của nhân viên đang đăng nhập hiện tại
+    private String userId;
 
     public ProductAdapter(List<Product> productList, String userId) {
         this.productList = productList;
-        selectedItems = new ArrayList<>();
         this.userId = userId;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
-
 
 
     @NonNull
@@ -65,7 +55,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
         String price = (numberFormat.format(product.getPrice()) + " đ").replace(',', '.');
 
-        holder.bind(product, selectedItems.contains(product.getId())); // truyền vào giá trị boolean để kiểm tra xem món nước đó đã được chọn hay chưa
         holder.tvNamePro.setText(product.getName());
         holder.tvPricePro.setText(price);
         if (!TextUtils.isEmpty(product.getUrlImage())) {
@@ -95,60 +84,60 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             btnBuy = itemView.findViewById(R.id.btn_buy);
 
 
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent=new Intent(itemView.getContext(), AddProductActivity.class);
-                    String id=productList.get(getAbsoluteAdapterPosition()).getId();
-                    intent.putExtra("idProduct",id);
-                    itemView.getContext().startActivity(intent);
-                }
+            itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(itemView.getContext(), AddProductActivity.class);
+                String id = productList.get(getAbsoluteAdapterPosition()).getId();
+                intent.putExtra("idProduct", id);
+                itemView.getContext().startActivity(intent);
             });
-        }
 
-        public void removeProduct(Product product) {
-            productList.remove(product);
-            notifyDataSetChanged();
-        }
+            btnBuy.setOnClickListener(v -> {
+                DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference().child("Carts").child(userId);
+                OderDetail oderDetail = new OderDetail();
+                Product product = productList.get(getAbsoluteAdapterPosition());
 
-        public void bind(final Product item, boolean isSelected) {
-            tvNamePro.setText(item.getName());
-            // categoryTextView.setText(item.getCategory());
-            NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
-            String price = (numberFormat.format(item.getPrice()) + " đ").replace(',', '.');
+                DatabaseReference cartProductRef = cartRef.child(product.getId());
+                oderDetail.setIdProduct(product.getId());
+                oderDetail.setQuantity(1);
 
-            tvPricePro.setText(price);
-            Picasso.get().load(item.getUrlImage()).into(imgPro); // sử dụng thư viện Picasso để load hình ảnh từ URL
+                // Use a transaction to update the cart item quantity if it already exists
+                cartProductRef.runTransaction(new Transaction.Handler() {
+                    @NonNull
+                    @Override
+                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                        OderDetail existingCartItem = mutableData.getValue(OderDetail.class);
 
-            btnBuy.setSelected(isSelected); // set trạng thái của button chọn sản phẩm
+                        if (existingCartItem == null) {
+                            // If the cart item doesn't exist, create a new one
+                            mutableData.setValue(oderDetail);
+                        } else {
+                            // If the cart item already exists, update the quantity
+                            int quantity = existingCartItem.getQuantity() + 1;
+                            existingCartItem.setQuantity(quantity);
+                            existingCartItem.setPrice(oderDetail.getPrice());
+                            mutableData.setValue(existingCartItem);
+                        }
 
-            btnBuy.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (btnBuy.isSelected()) {
-                        btnBuy.setSelected(false);
-                        selectedItems.remove(item.getId());
-                    } else {
-                        btnBuy.setSelected(true);
-                        selectedItems.add(item.getId());
-                        removeProduct(item); // Xóa sản phẩm khỏi danh sách sản phẩm
-
-                        // Thêm sản phẩm vào giỏ hàng của người dùng đó
-                        DatabaseReference cartRef = mDatabase.child("users").child(userId).child("cart").child(item.getId());
-                        cartRef.child("name").setValue(item.getName());
-                        cartRef.child("quantity").setValue(item.getquantity());
-                        cartRef.child("price").setValue(item.getPrice());
-
-                        cartRef.child("sum").setValue(item.getSum());
-                        cartRef.child("urlImage").setValue(item.getUrlImage());
+                        return Transaction.success(mutableData);
                     }
-                }
+
+                    @Override
+                    public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot snapshot) {
+                        if (error != null) {
+                            Toast.makeText(itemView.getContext(), "Error occurred: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(itemView.getContext(), "Sản Phẩm Đã Thêm Vào Giỏ Hàng", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
             });
 
 
         }
-
 
     }
+
+
 }
+

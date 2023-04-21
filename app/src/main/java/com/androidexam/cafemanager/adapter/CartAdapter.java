@@ -1,30 +1,25 @@
 package com.androidexam.cafemanager.adapter;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidexam.cafemanager.AddProductActivity;
 import com.androidexam.cafemanager.R;
+import com.androidexam.cafemanager.model.OderDetail;
 import com.androidexam.cafemanager.model.Product;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
@@ -33,111 +28,71 @@ import java.util.Locale;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
-    private List<Product> cartItems;
-
-    private OnQuantityChangeListener onQuantityChangeListener;
-    private Context mContext;
-    private DatabaseReference mDatabase;
+    private List<OderDetail> cartItems;
     private String userId;
-    private SharedPreferences sharedPreferences;
-    private OnQuantityChangeListener listener;
 
-
-
-    // Khởi tạo DatabaseReference cho Firebase Realtime Database
-   // DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
-    // Lấy SharedPreferences để lấy userId đã được lưu trữ khi đăng nhập
-//    DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
-//            .child("users")
-//            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//            .child("cart");
-
-
-
-    public CartAdapter(Context context, List<Product> cartItems) {
-        mContext = context;
+    public CartAdapter(List<OderDetail> cartItems, String userId) {
         this.cartItems = cartItems;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences("USER", Context.MODE_PRIVATE);
-        userId = sharedPreferences.getString("uid", "");
-        mDatabase = mDatabase.child("users").child(userId).child("cart");
+        this.userId = userId;
     }
-    public void setOnQuantityChangeListener(OnQuantityChangeListener onQuantityChangeListener) {
-        this.onQuantityChangeListener = onQuantityChangeListener;
-    }
+
 
     @NonNull
     @Override
     public CartAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.product_in_cart, parent, false);
-
-
-
-
         return new CartAdapter.ViewHolder(itemView);
     }
-    public void setCartItems(List<Product> cartItems) {
-        this.cartItems = cartItems;
-        notifyDataSetChanged();
-    }
 
-
-    @SuppressLint("RecyclerView")
     @Override
-
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-
-        Product product = cartItems.get(position);
+        String idProduct = cartItems.get(position).getIdProduct();
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
-        String price = (numberFormat.format(product.getSum()) + " đ").replace(',', '.');
 
-        String quantity = String.valueOf(product.getquantity());
-        holder.tvNamePro.setText(product.getName());
-        holder.tvQuantityPro.setText(quantity);
-        holder.tvPricePro.setText(price);
-        if (!TextUtils.isEmpty(product.getUrlImage())) {
-            Picasso.get().load(product.getUrlImage()).error(R.drawable.img).into(holder.imgPro);
-        }
-
-
-
-        holder.plusImageView.setOnClickListener(new View.OnClickListener() {
+        DatabaseReference oderRef = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Carts")
+                .child(userId)
+                .child(idProduct);
+        oderRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                Product product = cartItems.get(position);
-                product.increaseQuantity();
-                mDatabase.child(product.getId()).child("quantity").setValue(product.getquantity());
-                if (onQuantityChangeListener != null) {
-                    onQuantityChangeListener.onIncreaseQuantity(position);
-
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    OderDetail oderDetail = snapshot.getValue(OderDetail.class);
+                    holder.tvQuantityPro.setText(String.valueOf(oderDetail.getQuantity()));
                 }
+            }
 
-                notifyDataSetChanged();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
-        holder.minusImageView.setOnClickListener(new View.OnClickListener() {
+        DatabaseReference productRef = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Products")
+                .child(idProduct);
+
+        productRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                Product product = cartItems.get(position);
-                product.decreaseQuantity();
-                mDatabase.child(product.getId()).child("quantity").setValue(product.getquantity());
-                if (onQuantityChangeListener != null) {
-                    onQuantityChangeListener.onDecreaseQuantity(position);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Product product = snapshot.getValue(Product.class);
+                    holder.tvNamePro.setText(product.getName());
+                    String price = (numberFormat.format(product.getPrice()) + " đ").replace(',', '.');
+                    holder.tvPricePro.setText(price);
+                    Picasso.get().load(product.getUrlImage()).into(holder.imgPro);
                 }
-                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
 
 
-    }
-
-    public interface OnQuantityChangeListener {
-        void onIncreaseQuantity(int position);
-        void onDecreaseQuantity(int position);
     }
 
 
@@ -145,7 +100,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public int getItemCount() {
         return cartItems.size();
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgPro;
@@ -164,30 +118,47 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             plusImageView = itemView.findViewById(R.id.btnPlusQuantity);
             minusImageView = itemView.findViewById(R.id.btnMinusQuantity);
 
-            plusImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onQuantityChangeListener != null) {
-                        onQuantityChangeListener.onIncreaseQuantity(getAdapterPosition());
-                    }
-                }
+            plusImageView.setOnClickListener(view -> {
+                setQuantity(1);
             });
 
-            minusImageView.setOnClickListener(new View.OnClickListener() {
+            minusImageView.setOnClickListener(view1 -> {
+                setQuantity(2);
+            });
+
+
+        }
+
+        private void setQuantity(int type) {
+            OderDetail oderDetail = cartItems.get(getAbsoluteAdapterPosition());
+            DatabaseReference cartProductRef = FirebaseDatabase.getInstance().getReference()
+                    .child("Carts")
+                    .child(userId)
+                    .child(oderDetail.getIdProduct());
+            cartProductRef.runTransaction(new Transaction.Handler() {
+                @NonNull
                 @Override
-                public void onClick(View view) {
-                    if (onQuantityChangeListener != null) {
-                        onQuantityChangeListener.onDecreaseQuantity(getAdapterPosition());
+                public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                    OderDetail existingCartItem = mutableData.getValue(OderDetail.class);
+                    if (existingCartItem == null) {
+                        mutableData.setValue(oderDetail);
+                    } else {
+                        int quantity = existingCartItem.getQuantity();
+                        if (type == 1) {
+                            quantity++;
+                        } else if (type == 2 && quantity > 0) {
+                            quantity--;
+                        }
+                        existingCartItem.setQuantity(quantity);
+                        mutableData.setValue(existingCartItem);
                     }
+                    return Transaction.success(mutableData);
+                }
+
+                @Override
+                public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot snapshot) {
                 }
             });
         }
-
-
-
     }
-
-
-
-
 }

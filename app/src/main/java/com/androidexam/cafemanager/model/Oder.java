@@ -1,21 +1,22 @@
 package com.androidexam.cafemanager.model;
 
+import java.util.Date;
+
 public class Oder {
     private int id;
     private int idStaff;
-    private int idTable;
     private long totalBillAmount;
     private String note;
+    private Date createAt;
 
-    public Oder() {
+    public Oder(){
     }
-
-    public Oder(int id, int idStaff, int idTable, long totalBillAmount, String note) {
+    public Oder(int id, int idStaff, long totalBillAmount, String note, Date createAt) {
         this.id = id;
         this.idStaff = idStaff;
-        this.idTable = idTable;
         this.totalBillAmount = totalBillAmount;
         this.note = note;
+        this.createAt = createAt;
     }
 
     public int getId() {
@@ -34,14 +35,6 @@ public class Oder {
         this.idStaff = idStaff;
     }
 
-    public int getIdTable() {
-        return idTable;
-    }
-
-    public void setIdTable(int idTable) {
-        this.idTable = idTable;
-    }
-
     public long getTotalBillAmount() {
         return totalBillAmount;
     }
@@ -57,4 +50,13 @@ public class Oder {
     public void setNote(String note) {
         this.note = note;
     }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
 }

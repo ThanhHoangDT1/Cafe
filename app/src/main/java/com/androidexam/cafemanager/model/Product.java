@@ -5,37 +5,21 @@ public class Product {
     private String name;
     private String urlImage;
     private long price;
-    private long sum;
-
     private String description;
     private String category;
-    private long quantity;
 
     public Product() {
     }
 
-    public void increaseQuantity() {
-        quantity++;
-    }
-
-    public void decreaseQuantity() {
-        if (quantity > 0) {
-            quantity--;
-        }
-    }
-    public Product(String id, long quantity,long sum,String name, String urlImage, long price, String description, String category) {
+    public Product(String id,String name, String urlImage, long price, String description, String category) {
         this.id = id;
         this.name = name;
         this.urlImage = urlImage;
-        this.quantity = quantity;
         this.price = price;
-        this.sum = sum;
         this.description = description;
         this.category = category;
     }
 
-    public Product(String id, String name, long price, int i) {
-    }
 
     public String getId() {
         return id;
@@ -64,21 +48,9 @@ public class Product {
     public long getPrice() {
         return price;
     }
-    public long getSum() {
-        return sum;
-    }
-    public long getquantity() {
-        return quantity;
-    }
 
     public void setPrice(long price) {
         this.price = price;
-    }
-    public void setSum() {
-        this.sum = this.price*this.quantity;
-    }
-    public void setquantity() {
-        this.quantity = 1;
     }
 
     public String getDescription() {

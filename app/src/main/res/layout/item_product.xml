@@ -17,9 +17,10 @@
             android:id="@+id/img_product_item"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:src="@drawable/img"
-            android:translationZ="2dp" />
+            android:translationZ="6dp"
+            />
 
         <TextView
             android:id="@+id/tv_name_pro_item"
@@ -31,14 +32,25 @@
             android:textSize="18sp" />
 
 
-        <TextView
-            android:id="@+id/tv_price_pro_item"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Gia San Pham"
-            android:textColor="#F44336"
-            android:textSize="14sp" />
+           >
+            <TextView
+                android:id="@+id/tv_price_pro_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Gia San Pham"
+                android:textColor="#F44336"
+                android:textSize="14sp"
+                android:layout_centerVertical="true"/>
+
+
+
+                />
+        </RelativeLayout>
+
 
         <Button
             android:id="@+id/btn_buy"

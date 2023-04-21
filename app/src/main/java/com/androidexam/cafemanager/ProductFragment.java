@@ -3,6 +3,7 @@ package com.androidexam.cafemanager;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,8 +48,10 @@ public class ProductFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentProductBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+
         binding.rcvProducts.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         productList = new ArrayList<>();
+
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
         String uid = sharedPreferences.getString("uid", "");
 
@@ -56,6 +59,26 @@ public class ProductFragment extends Fragment {
         binding.rcvProducts.setAdapter(productAdapter);
 
 
+        viewListProduct();
+
+        viewAddProduct();
+
+
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+    public void viewAddProduct(){
+        binding.btnAddProduct.setOnClickListener(v->{
+            Intent intent = new Intent(getContext(), AddProductActivity.class);
+            startActivity(intent);
+        });
+    }
+    public void viewListProduct(){
         databaseRef = FirebaseDatabase.getInstance().getReference("Products");
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -74,14 +97,6 @@ public class ProductFragment extends Fragment {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-
-        return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 
 }
