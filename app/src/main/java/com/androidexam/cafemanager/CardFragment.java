@@ -9,21 +9,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.androidexam.cafemanager.adapter.CartAdapter;
 import com.androidexam.cafemanager.databinding.FragmentCardBinding;
+import com.androidexam.cafemanager.model.Oder;
 import com.androidexam.cafemanager.model.OderDetail;
+import com.androidexam.cafemanager.model.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CardFragment extends Fragment {
 
@@ -53,8 +63,26 @@ public class CardFragment extends Fragment {
         cartAdapter= new CartAdapter(cartItemList,userId);
         binding.rcvProInCart.setAdapter(cartAdapter);
 
-        return view;
+            return view;
     }
+
+
+    private void createBillAndSaveToDatabase(List<OderDetail> cartItems) {
+        DatabaseReference billsRef = FirebaseDatabase.getInstance().getReference("Bills");
+        String billId = billsRef.push().getKey(); // Tạo key ngẫu nhiên cho bill mới
+        long total = 0;
+        for (OderDetail item : cartItems) {
+            total += item.getQuantity() * item.getPrice();
+            billsRef.child(billId).child("Pro").child(item.getIdProduct()).setValue(item);
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        String currentDateAndTime = sdf.format(new Date());
+        Oder bill = new Oder(billId, userId, total, currentDateAndTime);
+        billsRef.child(billId).setValue(bill);
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Carts");
+        userRef.child(userId).removeValue(); // Xóa giỏ hàng của người dùng sau khi đã thanh toán
+    }
+
 
     @Override
     public void onStart() {
@@ -68,6 +96,17 @@ public class CardFragment extends Fragment {
                     OderDetail oderDetail = oderDetailSnapshot.getValue(OderDetail.class);
                     cartItemList.add(oderDetail);
                 }
+                long total=0;
+                for (OderDetail i:cartItemList
+                ) {
+                    total +=i.getQuantity()*i.getPrice();
+
+                }
+                NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.getDefault());
+                String totalprice = (numberFormat.format(total) + " đ").replace(',', '.');
+                binding.sum.setText(totalprice);
+                binding.payment.setOnClickListener(v -> createBillAndSaveToDatabase(cartItemList));
+
                 cartAdapter.notifyDataSetChanged();
             }
 

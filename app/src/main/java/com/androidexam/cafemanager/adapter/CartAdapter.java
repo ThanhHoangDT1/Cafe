@@ -1,8 +1,11 @@
 package com.androidexam.cafemanager.adapter;
 
+import android.app.AlertDialog;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -82,7 +85,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     Product product = snapshot.getValue(Product.class);
                     holder.tvNamePro.setText(product.getName());
                     String price = (numberFormat.format(product.getPrice()) + " đ").replace(',', '.');
-                    holder.tvPricePro.setText(price);
+                    long sum = product.getPrice()*Integer.parseInt(String.valueOf(holder.tvQuantityPro.getText()));
+                    String sumprice = (numberFormat.format(sum) + " đ").replace(',', '.');
+                    holder.tvPricePro.setText(sumprice);
                     Picasso.get().load(product.getUrlImage()).into(holder.imgPro);
                 }
             }
@@ -105,9 +110,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         ImageView imgPro;
         ImageView plusImageView;
         ImageView minusImageView;
+        ImageView deleteImageView;
+        ImageView noteImageView;
         TextView tvNamePro;
         TextView tvPricePro;
         TextView tvQuantityPro;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -117,6 +125,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             tvQuantityPro = itemView.findViewById(R.id.txtQuantityCart);
             plusImageView = itemView.findViewById(R.id.btnPlusQuantity);
             minusImageView = itemView.findViewById(R.id.btnMinusQuantity);
+            deleteImageView =itemView.findViewById(R.id.btnDeleteItem);
+            noteImageView =itemView.findViewById(R.id.btnNote);
+
 
             plusImageView.setOnClickListener(view -> {
                 setQuantity(1);
@@ -125,8 +136,55 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             minusImageView.setOnClickListener(view1 -> {
                 setQuantity(2);
             });
+            noteImageView.setOnClickListener(v->clickNote());
+
+            deleteImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    OderDetail oderDetail = cartItems.get(getAbsoluteAdapterPosition());
+                    DatabaseReference cartProductRef = FirebaseDatabase.getInstance().getReference()
+                            .child("Carts")
+                            .child(userId);
+
+                        // Xóa sản phẩm khỏi database realtime
+                        cartProductRef.child(oderDetail.getIdProduct()).removeValue();
+
+                        // Xóa sản phẩm khỏi danh sách cartItems
+                        cartItems.remove(oderDetail);
+                        notifyDataSetChanged();
+                    }
+
+            });
 
 
+        }
+
+        private void clickNote() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+            builder.setTitle("NOTE !");
+            builder.setCancelable(true);
+            final EditText input = new EditText(itemView.getContext());
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(input);
+
+            OderDetail oderDetail = cartItems.get(getAbsoluteAdapterPosition());
+            if(oderDetail!=null){
+                input.setText(oderDetail.getNote());
+            }
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                String note = input.getText().toString();
+                DatabaseReference cartProductRef = FirebaseDatabase.getInstance().getReference()
+                        .child("Carts")
+                        .child(userId)
+                        .child(oderDetail.getIdProduct());
+                oderDetail.setNote(note);
+                cartProductRef.setValue(oderDetail);
+
+            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
         }
 
         private void setQuantity(int type) {
@@ -146,7 +204,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                         int quantity = existingCartItem.getQuantity();
                         if (type == 1) {
                             quantity++;
-                        } else if (type == 2 && quantity > 0) {
+                        } else if (type == 2 && quantity > 1) {
                             quantity--;
                         }
                         existingCartItem.setQuantity(quantity);

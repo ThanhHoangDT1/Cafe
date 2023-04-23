@@ -99,6 +99,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 DatabaseReference cartProductRef = cartRef.child(product.getId());
                 oderDetail.setIdProduct(product.getId());
                 oderDetail.setQuantity(1);
+                oderDetail.setPrice(product.getPrice());
 
                 // Use a transaction to update the cart item quantity if it already exists
                 cartProductRef.runTransaction(new Transaction.Handler() {

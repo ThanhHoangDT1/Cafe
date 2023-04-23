@@ -71,7 +71,7 @@
                 android:id="@+id/btnMinusQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginBottom="25dp"
                 android:src="@drawable/ic_baseline_indeterminate_check_box_24"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -106,9 +106,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:src="@drawable/ic_baseline_cancel_24"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/purple_500" />
+
+            <ImageView
+                android:id="@+id/btnNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/baseline_note_alt_24"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/purple_500" />
 

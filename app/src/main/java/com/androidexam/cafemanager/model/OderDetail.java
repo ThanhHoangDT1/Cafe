@@ -7,15 +7,19 @@ public class OderDetail {
     private int quantity;
     private long price;
 
+
+    private String note;
+
     public OderDetail() {
     }
 
-    public OderDetail(String id, String idOder, String idProduct, int quantity, long price) {
+    public OderDetail(String id, String idOder, String idProduct, int quantity, long price, String note) {
         this.id = id;
         this.idOder = idOder;
         this.idProduct = idProduct;
         this.quantity = quantity;
         this.price = price;
+        this.note = note;
     }
 
     public String getId() {
@@ -57,4 +61,12 @@ public class OderDetail {
     public void setPrice(long price) {
         this.price = price;
     }
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
 }
