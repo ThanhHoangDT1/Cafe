@@ -29,7 +29,7 @@ public class PersonalFragment extends Fragment {
 
     private EditText Email ,Name,Role,User,Password;
     private DatabaseReference mDatabase;
-    private Button btnEdit;
+    private Button btnEdit,btnLogout;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -84,10 +84,18 @@ public class PersonalFragment extends Fragment {
         User = view.findViewById(R.id.pfUser);
         Password = view.findViewById(R.id.pfPassword);
         btnEdit = view.findViewById(R.id.btnEdit);
+        btnLogout = view.findViewById(R.id.btnlogout);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
         String uid = sharedPreferences.getString("uid", "");
 
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),LoginActivity.class));
+                getActivity().finish();
+            }
+        });
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
