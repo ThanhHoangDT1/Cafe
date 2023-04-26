@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private EditText Email ,Name,Role,User,Password;
+    private EditText Email ,Name,Role,User,Password, ConfirmPassword;
     private DatabaseReference mDatabase;
     Button btnSave;
 
@@ -37,6 +37,7 @@ public class EditProfileActivity extends AppCompatActivity {
         Role = findViewById(R.id.editRole);
         User = findViewById(R.id.editUsername);
         Password = findViewById(R.id.editPassword);
+        ConfirmPassword = findViewById(R.id.editConfirmPassword);
         btnSave = findViewById(R.id.btnSave);
 
         // Lấy uid của người dùng từ SharedPreferences
@@ -80,6 +81,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 String role = Role.getText().toString().trim();
                 String username = User.getText().toString().trim();
                 String password = Password.getText().toString().trim();
+                String confirmpassword = ConfirmPassword.getText().toString().trim();
 
                 // Truy xuất dữ liệu người dùng từ Firebase Realtime Database
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
@@ -106,12 +108,22 @@ public class EditProfileActivity extends AppCompatActivity {
                         if (!role.equals(roleOld)) {
                             reference.child("role").setValue(role);
                         }
-                        if (!password.equals(passwordOld)) {
-                            reference.child("password").setValue(password);
+                        if (!confirmpassword.equals("")) {
+                                if(!confirmpassword.equals(passwordOld)){
+                                    reference.child("password").setValue(confirmpassword);
+                                    // Hiển thị thông báo "Đã lưu"
+                                    Toast.makeText(EditProfileActivity.this, "Đã lưu", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }else{
+                                    Toast.makeText(EditProfileActivity.this, "Mật khẩu mới khác mật khẩu cũ", Toast.LENGTH_SHORT).show();
+                                }
+
+                        }else{
+                            Toast.makeText(EditProfileActivity.this, "Mật khẩu mới không được để trống", Toast.LENGTH_SHORT).show();Toast.makeText(EditProfileActivity.this, "Vui lòng nhập mật khẩu mới", Toast.LENGTH_SHORT).show();
+
                         }
 
-                        // Hiển thị thông báo "Đã lưu"
-                        Toast.makeText(EditProfileActivity.this, "Đã lưu", Toast.LENGTH_SHORT).show();
+
 
                     }
                     @Override
