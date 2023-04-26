@@ -13,15 +13,21 @@ public class OderDetail {
     public OderDetail() {
     }
 
-    public OderDetail(String id, String idOder, String idProduct, int quantity, long price, String note) {
-        this.id = id;
-        this.idOder = idOder;
+    public OderDetail( String idProduct, int quantity, long price) {
+
         this.idProduct = idProduct;
         this.quantity = quantity;
         this.price = price;
-        this.note = note;
+
     }
 
+    public void probill(String idProduct, int quantity, long price) {
+
+        this.idProduct = idProduct;
+        this.quantity = quantity;
+        this.price = price;
+
+    }
     public String getId() {
         return id;
     }
