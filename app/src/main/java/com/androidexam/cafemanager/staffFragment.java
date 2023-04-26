@@ -1,64 +1,101 @@
 package com.androidexam.cafemanager;
 
+import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link staffFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.androidexam.cafemanager.adapter.ProductAdapter;
+import com.androidexam.cafemanager.adapter.staffAdapter;
+import com.androidexam.cafemanager.databinding.FragmentStaffBinding;
+import com.androidexam.cafemanager.model.Product;
+import com.androidexam.cafemanager.model.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class staffFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FragmentStaffBinding binding;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private staffAdapter staffAdapter;
 
-    public staffFragment() {
-        // Required empty public constructor
-    }
+    private List<User> staffList;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment staffFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static staffFragment newInstance(String param1, String param2) {
-        staffFragment fragment = new staffFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private DatabaseReference databaseRef;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_staff, container, false);
+
+        binding = FragmentStaffBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        binding.rvStaff.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        staffList = new ArrayList<>();
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
+        String uid = sharedPreferences.getString("uid", "");
+
+        staffAdapter = new staffAdapter(staffList, uid);
+        binding.rvStaff.setAdapter(staffAdapter);
+
+        viewListStaff();
+
+
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    private void viewListStaff() {
+
+        databaseRef = FirebaseDatabase.getInstance().getReference("users");
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                staffList.clear();
+                for (DataSnapshot staffSnapshot : dataSnapshot.getChildren()) {
+                    User staff = staffSnapshot.getValue(User.class);
+                    staffList.add(staff);
+                }
+                staffAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 }
