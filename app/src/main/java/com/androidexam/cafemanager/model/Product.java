@@ -4,6 +4,7 @@ public class Product {
     private String id;
     private String name;
     private String urlImage;
+
     private long price;
     private String description;
     private String category;
