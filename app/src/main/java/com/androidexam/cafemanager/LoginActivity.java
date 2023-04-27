@@ -93,8 +93,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (snapshot.exists()){
                     loginUsername.setError(null);
                     String passwordFromDB = snapshot.child(userUsername).child("password").getValue(String.class);
+                    String roleFromDB = snapshot.child(userUsername).child("role").getValue(String.class);
 
-                    if (passwordFromDB.equals(userPassword)){
+                    if (passwordFromDB.equals(userPassword)  ){
                         loginUsername.setError(null);
 
                         // Save user id to SharedPreferences
@@ -106,11 +107,11 @@ public class LoginActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
 
+                    }
 
-
-
-                    } else {
+                    else {
                         loginPassword.setError("Thông tin không hợp lệ");
                         loginPassword.requestFocus();
                     }

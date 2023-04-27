@@ -48,14 +48,17 @@
 
 
 
-                />
+            <Button
+            android:id="@+id/btn_buy"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="+"
+
+            />
         </RelativeLayout>
 
 
-        <Button
-            android:id="@+id/btn_buy"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:text="+" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
