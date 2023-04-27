@@ -1,7 +1,5 @@
 package com.androidexam.cafemanager.model;
 
-import java.util.Date;
-
 public class Oder {
     private String id;
     private String idStaff;

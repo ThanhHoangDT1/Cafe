@@ -32,7 +32,6 @@ public class ProductFragment extends Fragment {
     private FragmentProductBinding binding;
     private ProductAdapter productAdapter;
     private List<Product> productList;
-    private DatabaseReference databaseRef;
 
 
     @Override
@@ -79,7 +78,7 @@ public class ProductFragment extends Fragment {
         });
     }
     public void viewListProduct(){
-        databaseRef = FirebaseDatabase.getInstance().getReference("Products");
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Products");
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
