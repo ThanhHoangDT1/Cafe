@@ -17,7 +17,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="right"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:id="@+id/btnlogout"
             android:drawableLeft="@drawable/ic_baseline_logout_24"
             android:backgroundTint="#3596EC"
@@ -51,6 +51,7 @@
                     android:layout_width="70sp"
                     android:layout_height="70sp"
                     android:layout_gravity="center"
+                    android:id="@+id/pfimg"
                     android:src="@drawable/person">
 
                 </ImageView>
@@ -60,14 +61,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/pfUser"
                     android:background="@drawable/custom_edittext"
-                    android:drawableLeft="@drawable/ic_baseline_person_24"
+                    android:drawableLeft="@drawable/ic_baseline_person_pin_24"
                     android:drawablePadding="8dp"
                     android:hint="Tên đăng nhập"
                     android:padding="8dp"
                     android:enabled="false"
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_marginTop="30dp"/>
 
                 <EditText
                     android:layout_width="match_parent"
@@ -81,7 +82,7 @@
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="20dp"/>
 
                 <EditText
                     android:layout_width="match_parent"
@@ -95,36 +96,23 @@
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="20dp"/>
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/pfEmail"
                     android:background="@drawable/custom_edittext"
-                    android:drawableLeft="@drawable/ic_baseline_person_24"
+                    android:drawableLeft="@drawable/ic_baseline_email_24"
                     android:drawablePadding="8dp"
                     android:hint="Email"
                     android:enabled="false"
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="20dp"/>
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/pfPassword"
-                    android:background="@drawable/custom_edittext"
-                    android:drawableLeft="@drawable/ic_baseline_lock_24"
-                    android:drawablePadding="8dp"
-                    android:hint="Mật khẩu"
-                    android:padding="8dp"
-                    android:enabled="false"
-                    android:inputType="textPassword"
-                    android:textColor="@color/black"
-                    android:textColorHighlight="@color/cardview_dark_background"
-                    android:layout_marginTop="15dp"/>
+
 
                 <Button
                     android:layout_width="match_parent"
