@@ -47,10 +47,10 @@ public class ProductFragment extends Fragment {
             "Sinh Tố",
             "Cà Phê"
     ));
-    
+
 
     // Khai báo mảng chứa tên các loại sản phẩm
-   // private String[] productTypes = {"Tất cả", "Cà phê", "Trà sữa", "Soda", "Trà trái cây", "Nước ép"};
+    // private String[] productTypes = {"Tất cả", "Cà phê", "Trà sữa", "Soda", "Trà trái cây", "Nước ép"};
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,11 +76,8 @@ public class ProductFragment extends Fragment {
         Spinner spnProductTypes = binding.btnFilter;
 
 
-
-
-
         // Khởi tạo ArrayAdapter để hiển thị danh sách các loại sản phẩm lên Spinner
-        
+
         viewListProduct();
         viewAddProduct();
         viewSearchProduct();
@@ -95,6 +92,7 @@ public class ProductFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
     public void viewAddProduct() {
         binding.btnAddProduct.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), AddProductActivity.class);
@@ -110,7 +108,7 @@ public class ProductFragment extends Fragment {
                 productList.clear();
                 for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                     Product product = productSnapshot.getValue(Product.class);
-                        productList.add(product);
+                    productList.add(product);
                 }
 
                 productAdapter.notifyDataSetChanged();
@@ -123,6 +121,7 @@ public class ProductFragment extends Fragment {
             }
         });
     }
+
     public void viewSearchProduct() {
         binding.btnSearch.setOnClickListener(v -> {
             String searchQuery = binding.etSearch.getText().toString().toLowerCase();
@@ -137,7 +136,7 @@ public class ProductFragment extends Fragment {
                         productList.clear();
                         for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                             Product product = productSnapshot.getValue(Product.class);
-                            if(product.getName().toLowerCase().contains(searchQuery)){
+                            if (product.getName().toLowerCase().contains(searchQuery)) {
                                 productList.add(product);
                             }
                         }
@@ -164,10 +163,9 @@ public class ProductFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCategory = (String) parent.getItemAtPosition(position);
 
-                if (selectedCategory.equals("Tất cả") ) {
+                if (selectedCategory.equals("Tất cả")) {
                     viewListProduct();
-                }
-                else {
+                } else {
                     filterProducts(selectedCategory);
                 }
             }
@@ -178,6 +176,7 @@ public class ProductFragment extends Fragment {
             }
         });
     }
+
     public void filterProducts(String category) {
         databaseRef = FirebaseDatabase.getInstance().getReference("Products");
         databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -200,7 +199,6 @@ public class ProductFragment extends Fragment {
             }
         });
     }
-
 
 
 }

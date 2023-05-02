@@ -13,7 +13,7 @@ import com.androidexam.cafemanager.model.User;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+//import de.hdodenhof.circleimageview.CircleImageView;
 
 public class staffAdapter extends RecyclerView.Adapter<staffAdapter.ViewHolder> {
 
@@ -65,7 +65,7 @@ public class staffAdapter extends RecyclerView.Adapter<staffAdapter.ViewHolder> 
 
         TextView tvRolesStaff;
 
-        CircleImageView imgStaff;
+       // CircleImageView imgStaff;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,7 +73,7 @@ public class staffAdapter extends RecyclerView.Adapter<staffAdapter.ViewHolder> 
             tvNameStaff = itemView.findViewById(R.id.tv_name_staff);
             tvGmailStaff = itemView.findViewById(R.id.tv_gmail_staff);
             tvRolesStaff = itemView.findViewById(R.id.tv_roles_staff);
-            imgStaff = (CircleImageView)itemView.findViewById(R.id.img);
+           // imgStaff = (CircleImageView)itemView.findViewById(R.id.img);
             }
     }
 }

@@ -68,6 +68,7 @@ public class AddProductActivity extends AppCompatActivity {
             clickAdd();
         }
         clickImage();
+        binding.btnCancel.setOnClickListener(v->finish());
     }
 
     private void enableComponents(boolean type) {
@@ -82,8 +83,11 @@ public class AddProductActivity extends AppCompatActivity {
             if (statusUpdate) {
                 Product updateProduct = getProduct();
                 if (updateProduct != null) {
-                    DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference("Products");
-                    productsRef.child(idProduct).setValue(updateProduct);
+                    DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("Products").child(idProduct);
+                    productRef.child("name").setValue(updateProduct.getName());
+                    productRef.child("price").setValue(updateProduct.getPrice());
+                    productRef.child("category").setValue(updateProduct.getCategory());
+                    productRef.child("description").setValue(updateProduct.getDescription());
                     saveImage(idProduct);
                     enableComponents(false);
                     statusUpdate = false;
@@ -193,7 +197,6 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     private void clickImage() {
-        if (idProduct == null || statusUpdate) {
             ActivityResultLauncher<String> imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
                     uri -> {
                         if (uri != null) {
@@ -205,7 +208,6 @@ public class AddProductActivity extends AppCompatActivity {
             binding.imgProduct.setOnClickListener(view -> {
                 imagePickerLauncher.launch("image/*");
             });
-        }
     }
 
 
