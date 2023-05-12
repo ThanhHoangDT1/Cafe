@@ -67,6 +67,7 @@ public class staffFragment extends Fragment {
         binding.rvStaff.setAdapter(staffAdapter);
 
         viewListStaff();
+        viewSearchStaff();
 
 
         return view;
@@ -90,12 +91,45 @@ public class staffFragment extends Fragment {
                     staffList.add(staff);
                 }
                 staffAdapter.notifyDataSetChanged();
-            }
 
+            }
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
     }
+
+
+            public void viewSearchStaff() {
+                binding.btnSearch.setOnClickListener(v -> {
+                    String searchQuery = binding.etSearch.getText().toString().toLowerCase();
+
+                    if (searchQuery.isEmpty()) {
+                        viewListStaff();
+                    } else {
+                        databaseRef = FirebaseDatabase.getInstance().getReference("users");
+                        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                staffList.clear();
+                                for (DataSnapshot staffSnapshot : dataSnapshot.getChildren()) {
+                                    User staff = staffSnapshot.getValue(User.class);
+                                    if (staff.getName().toLowerCase().contains(searchQuery)) {
+                                        staffList.add(staff);
+                                    }
+                                }
+                                staffAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError error) {
+                                // Failed to read value
+                                Log.w(TAG, "Failed to read value.", error.toException());
+                            }
+                        });
+                    }
+                });
+            }
 }

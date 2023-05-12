@@ -1,15 +1,21 @@
 package com.androidexam.cafemanager.adapter;
 
+import android.content.Intent;
+import android.media.Image;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidexam.cafemanager.DetailStaffActivity;
 import com.androidexam.cafemanager.R;
 import com.androidexam.cafemanager.model.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -43,10 +49,12 @@ public class staffAdapter extends RecyclerView.Adapter<staffAdapter.ViewHolder> 
         holder.tvNameStaff.setText(staff.getName());
         holder.tvGmailStaff.setText(staff.getEmail());
         holder.tvRolesStaff.setText(staff.getRole());
+//        staff.setImage_url("https://firebasestorage.googleapis.com/v0/b/cafemanager-cf351.appspot.com/o/images%2Fdanh?alt=media&token=3a169307-b500-4124-b090-0930cb654484");
+//        System.out.println(staff.getImage_url()+"abc");
+        if (!TextUtils.isEmpty(staff.getImage_url())) {
+            Picasso.get().load(staff.getImage_url()).error(R.drawable.img).into(holder.imgStaff);
 
-
-
-
+        }
 
 
 
@@ -65,7 +73,7 @@ public class staffAdapter extends RecyclerView.Adapter<staffAdapter.ViewHolder> 
 
         TextView tvRolesStaff;
 
-       // CircleImageView imgStaff;
+        ImageView imgStaff;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,7 +81,15 @@ public class staffAdapter extends RecyclerView.Adapter<staffAdapter.ViewHolder> 
             tvNameStaff = itemView.findViewById(R.id.tv_name_staff);
             tvGmailStaff = itemView.findViewById(R.id.tv_gmail_staff);
             tvRolesStaff = itemView.findViewById(R.id.tv_roles_staff);
-           // imgStaff = (CircleImageView)itemView.findViewById(R.id.img);
+            imgStaff = itemView.findViewById(R.id.img);
+
+            itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(itemView.getContext(), DetailStaffActivity.class);
+                String id = staffList.get(getAbsoluteAdapterPosition()).getUsername();
+                intent.putExtra("idStaff", id);
+                itemView.getContext().startActivity(intent);
+                System.out.println(id +"abd");
+            });
             }
     }
 }

@@ -19,6 +19,8 @@ public class BillManagementActivity extends AppCompatActivity {
 
     private ActivityBillManagementBinding binding;
     private String idBill;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

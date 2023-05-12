@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidexam.cafemanager.BillManagementActivity;
+import com.androidexam.cafemanager.DetailStaffActivity;
 import com.androidexam.cafemanager.R;
 import com.androidexam.cafemanager.model.Oder;
 
@@ -56,9 +57,13 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             tvTotalBill=itemView.findViewById(R.id.tv_order_total_value);
             itemView.setOnClickListener(view -> {
                 Intent intent = new Intent(itemView.getContext(), BillManagementActivity.class);
+//                Intent intent1 = new Intent(itemView.getContext(), DetailStaffActivity.class);
                 String id = oderList.get(getAbsoluteAdapterPosition()).getId();
+//                String id1= oderList.get(getAbsoluteAdapterPosition()).getIdStaff();
                 intent.putExtra("idOrder", id);
+//                intent1.putExtra("idStaffofbill", id1);
                 itemView.getContext().startActivity(intent);
+//                itemView.getContext().startActivity(intent1);
             });
         }
     }

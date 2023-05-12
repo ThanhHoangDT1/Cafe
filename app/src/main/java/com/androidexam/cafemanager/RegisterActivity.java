@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                 boolean isPasswordValid = password.length() > 5;
 
                 if (isEmailValid && isPasswordValid) {
-                    User user = new User(name, email, role, username, password);
+                    User user = new User(name, email, role, username, password,null);
                     reference.child(username).setValue(user);
                     Toast.makeText(RegisterActivity.this, "Bạn đã đăng kí thành công!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
