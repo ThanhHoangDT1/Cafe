@@ -79,29 +79,41 @@ public class HomeFragment extends Fragment {
         DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("Bills");
         oderList.clear();
 
-        String startDate =binding.dateStart.getText().toString();
-        String endDate = binding.dateEnd.getText().toString();
+        String startDate = binding.dateStart.getText().toString() + " 00:00:00";
+        String endDate = binding.dateEnd.getText().toString() + " 23:59:59";
 
-        ordersRef.orderByChild("createAt")
-                .startAt(startDate)
-                .endAt(endDate)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            Oder bill = dataSnapshot.getValue(Oder.class);
+        ordersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Oder bill = dataSnapshot.getValue(Oder.class);
+                    String billDateCreate = bill.getCreateAt();
+
+                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+                    try {
+                        Date billCreate = format.parse(billDateCreate);
+                        Date dateStart = format.parse(startDate);
+                        Date dateEnd = format.parse(endDate);
+
+                        if (billCreate.after(dateStart) && billCreate.before(dateEnd)) {
                             oderList.add(bill);
                         }
-                        Collections.reverse(oderList);
-                        billAdapter.notifyDataSetChanged();
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
+                }
+                Collections.reverse(oderList);
+                billAdapter.notifyDataSetChanged();
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
+            }
 
-                });
+        });
 
     }
 

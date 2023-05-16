@@ -1,15 +1,11 @@
 package com.androidexam.cafemanager;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import com.androidexam.cafemanager.databinding.ActivityMainBinding;
 
@@ -35,11 +31,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.personal:
                     replaceFragment(new PersonalFragment());
-
                     break;
+                case R.id.statistic:
+                    replaceFragment(new StatisticFragment());
             }
-
-
             return true;
         });
     }

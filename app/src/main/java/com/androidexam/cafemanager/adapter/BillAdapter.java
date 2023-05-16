@@ -54,6 +54,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             tvDateCreate=itemView.findViewById(R.id.tv_order_date_value);
             tvCreateBy=itemView.findViewById(R.id.tv_create_by);
             tvTotalBill=itemView.findViewById(R.id.tv_order_total_value);
+
             itemView.setOnClickListener(view -> {
                 Intent intent = new Intent(itemView.getContext(), BillManagementActivity.class);
                 String id = oderList.get(getAbsoluteAdapterPosition()).getId();

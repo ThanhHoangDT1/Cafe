@@ -1,5 +1,6 @@
 package com.androidexam.cafemanager;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -59,15 +60,57 @@ public class AddProductActivity extends AppCompatActivity {
 
 
         if (!TextUtils.isEmpty(idProduct)) {
-            binding.btnAdd.setText("Edit");
+            binding.btnAdd.setText("Sửa");
             loadDataProduct();
             enableComponents(false);
             clickUpdate();
+            clickDelete();
 
         } else {
             clickAdd();
         }
         clickImage();
+        clickCancel();
+    }
+
+    private void clickDelete() {
+        binding.layoutProduct.setOnLongClickListener(v -> {
+                    showConfirmationDialog();
+                    return true;
+                }
+        );
+    }
+
+    private void showConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Product");
+        builder.setMessage("Are you sure you want to delete this product?");
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            // Delete the product here
+            deleteProduct();
+            finish();
+        });
+        builder.setNegativeButton("No", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void deleteProduct() {
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference("Products");
+        productsRef.child(idProduct).removeValue();
+    }
+
+    private void clickCancel() {
+        binding.btnCancel.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(idProduct)) {
+                binding.btnAdd.setText("Sửa");
+                loadDataProduct();
+                enableComponents(false);
+                uriImageFromIntent = null;
+            } else {
+                finish();
+            }
+        });
     }
 
     private void enableComponents(boolean type) {
@@ -88,10 +131,12 @@ public class AddProductActivity extends AppCompatActivity {
                     enableComponents(false);
                     statusUpdate = false;
                     Toast.makeText(this, "Cập Nhật Sản Phẩm Thành Công", Toast.LENGTH_SHORT).show();
+                    binding.btnAdd.setText("Sửa");
                 }
             } else {
                 enableComponents(true);
                 statusUpdate = true;
+                binding.btnAdd.setText("Lưu");
             }
         });
     }
@@ -137,6 +182,7 @@ public class AddProductActivity extends AppCompatActivity {
                 productsRef.child(id).setValue(newProduct);
                 saveImage(id);
                 Toast.makeText(this, "Thêm Sản Phẩm Mới Thành Công", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
@@ -193,19 +239,17 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     private void clickImage() {
-        if (idProduct == null || statusUpdate) {
-            ActivityResultLauncher<String> imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
-                    uri -> {
-                        if (uri != null) {
-                            uriImageFromIntent = uri;
-                            Picasso.get().load(uri).into(binding.imgProduct);
-                        }
-                    });
+        ActivityResultLauncher<String> imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        uriImageFromIntent = uri;
+                        Picasso.get().load(uri).into(binding.imgProduct);
+                    }
+                });
 
-            binding.imgProduct.setOnClickListener(view -> {
-                imagePickerLauncher.launch("image/*");
-            });
-        }
+        binding.imgProduct.setOnClickListener(view -> {
+            imagePickerLauncher.launch("image/*");
+        });
     }
 
 

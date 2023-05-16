@@ -1,11 +1,11 @@
 package com.androidexam.cafemanager;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
 
 import com.androidexam.cafemanager.databinding.ActivityAdmin2Binding;
 
@@ -26,15 +26,12 @@ public class AdminActivity2 extends AppCompatActivity {
                     replaceFragment(new managerbillFragment());
                     break;
                 case R.id.statistics:
-                    replaceFragment(new statisticsFragment());
+                    replaceFragment(new StatisticFragment());
                     break;
                 case R.id.personal:
                     replaceFragment(new PersonalFragment());
-
                     break;
             }
-
-
             return true;
         });
     }
