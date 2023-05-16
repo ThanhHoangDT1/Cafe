@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                     String passwordFromDB = snapshot.child(userUsername).child("password").getValue(String.class);
                     String roleFromDB = snapshot.child(userUsername).child("role").getValue(String.class);
 
-                    if (passwordFromDB.equals(userPassword)  ){
+                    if (passwordFromDB.equals(userPassword)   ){
                         loginUsername.setError(null);
 
                         // Save user id to SharedPreferences
@@ -105,9 +105,15 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("uid", uid);
                         editor.apply();
 
+                        if(roleFromDB.equals("Manage")){
+                            Intent intent = new Intent(LoginActivity.this, AdminActivity2.class);
+                            startActivity(intent);
+                            finish();
+
+                        } else if(roleFromDB.equals("Staff")){
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
-                        finish();
+                        finish();}
 
                     }
 

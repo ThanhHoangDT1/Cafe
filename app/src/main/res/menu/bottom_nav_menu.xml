@@ -4,15 +4,18 @@
     <item
         android:id="@+id/home"
         android:icon="@drawable/baseline_home_24"
-        android:title="Trang chu" />
+        android:title="Hoa don"        />
+
     <item
         android:id="@+id/product"
         android:icon="@drawable/baseline_production_quantity_limits_24"
-        android:title="San pham" />
+        android:title="San pham"/>
+
     <item
         android:id="@+id/card"
-        android:icon="@drawable/baseline_shopping_cart_24"
-        android:title="Gio hang" />
+        android:title="Gio hang"
+        android:icon="@drawable/baseline_shopping_cart_24"/>
+
     <item
         android:id="@+id/personal"
         android:icon="@drawable/baseline_person_24"

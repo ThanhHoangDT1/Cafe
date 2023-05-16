@@ -1,7 +1,19 @@
 package com.androidexam.cafemanager.model;
 
 public class User {
+
+
     String name, email,role, username, password;
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    String image_url;
 
     public String getName() {
         return name;
@@ -51,6 +63,15 @@ public class User {
         this.role = role;
         this.username = username;
         this.password = password;
+
+    }
+    public User(String name, String email,String role, String username, String password, String urlImageStaff) {
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.username = username;
+        this.password = password;
+        this.image_url = urlImageStaff;
     }
 
     public User() {

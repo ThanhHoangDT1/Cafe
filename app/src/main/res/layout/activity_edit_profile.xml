@@ -32,13 +32,22 @@
                 android:textAlignment="center"
                 android:textStyle="bold"
                 android:textColor="@color/purple" />
+            <ImageView
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:layout_gravity="center"
+                android:id="@+id/editimg"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/person">
+
+            </ImageView>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editUsername"
                 android:background="@drawable/custom_edittext"
-                android:drawableLeft="@drawable/ic_baseline_person_24"
+                android:drawableLeft="@drawable/ic_baseline_person_pin_24"
                 android:drawablePadding="8dp"
                 android:hint="Tên đăng nhập"
                 android:padding="8dp"
@@ -59,7 +68,7 @@
                 android:padding="8dp"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/cardview_dark_background"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="20dp"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -73,47 +82,22 @@
                 android:padding="8dp"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/cardview_dark_background"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="20dp"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editEmail"
                 android:background="@drawable/custom_edittext"
-                android:drawableLeft="@drawable/ic_baseline_person_24"
+                android:drawableLeft="@drawable/ic_baseline_email_24"
                 android:drawablePadding="8dp"
                 android:hint="Email"
                 android:padding="8dp"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/cardview_dark_background"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="20dp"/>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editPassword"
-                android:background="@drawable/custom_edittext"
-                android:drawableLeft="@drawable/ic_baseline_lock_24"
-                android:drawablePadding="8dp"
-                android:hint="Mật khẩu cũ"
-                android:padding="8dp"
 
-                android:textColor="@color/black"
-                android:textColorHighlight="@color/cardview_dark_background"
-                android:layout_marginTop="30dp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editConfirmPassword"
-                android:background="@drawable/custom_edittext"
-                android:drawableLeft="@drawable/ic_baseline_lock_24"
-                android:drawablePadding="8dp"
-                android:hint="Mật khẩu mới"
-                android:padding="8dp"
-
-                android:textColor="@color/black"
-                android:textColorHighlight="@color/cardview_dark_background"
-                android:layout_marginTop="30dp"/>
 
             <Button
                 android:layout_width="match_parent"
@@ -121,9 +105,21 @@
                 android:id="@+id/btnSave"
                 android:text="Lưu"
                 android:textSize="18sp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/purple"
-                app:cornerRadius = "20dp"/>
+                app:cornerRadius = "10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Thay đổi mật khẩu"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                android:id="@+id/btnChangePassword"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/purple"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
