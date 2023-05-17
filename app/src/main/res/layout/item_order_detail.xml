@@ -38,16 +38,6 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/img_pro_note_order"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:src="@drawable/baseline_note_alt_24"
-                app:tint="@color/purple_500" />
-
             <TextView
                 android:id="@+id/tv_pro_price_order"
                 android:layout_width="wrap_content"
@@ -61,7 +51,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/img_pro_note_order"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="55dp"
@@ -73,7 +62,6 @@
                 android:id="@+id/tv_pro_quantity_order"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/img_pro_note_order"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="40dp"

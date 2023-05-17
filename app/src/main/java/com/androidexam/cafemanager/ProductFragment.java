@@ -73,8 +73,6 @@ public class ProductFragment extends Fragment {
 
         productAdapter = new ProductAdapter(productList, uid);
         binding.rcvProducts.setAdapter(productAdapter);
-        Spinner spnProductTypes = binding.btnFilter;
-
 
         // Khởi tạo ArrayAdapter để hiển thị danh sách các loại sản phẩm lên Spinner
 

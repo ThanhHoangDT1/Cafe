@@ -90,8 +90,6 @@ public class BillDetailAdapter extends RecyclerView.Adapter<BillDetailAdapter.Vi
             nameProduct = itemView.findViewById(R.id.tv_pro_name_order);
             priceProduct = itemView.findViewById(R.id.tv_pro_price_order);
             quantityProduct = itemView.findViewById(R.id.tv_pro_quantity_order);
-            imgNote = itemView.findViewById(R.id.img_pro_note_order );
-
             imgNote.setOnClickListener(v->{
 
             });
