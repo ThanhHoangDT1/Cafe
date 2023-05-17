@@ -1,6 +1,11 @@
 package com.androidexam.cafemanager.adapter;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import static com.androidexam.cafemanager.ProductFragment.ROLE_ADMIN;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +62,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         holder.tvNamePro.setText(product.getName());
         holder.tvPricePro.setText(price);
-        if (!TextUtils.isEmpty(product.getUrlImage())) {
+        if (!TextUtils.isEmpty(product.getUrlImage()) || product.getUrlImage()==null) {
             Picasso.get().load(product.getUrlImage()).error(R.drawable.img).into(holder.imgPro);
         }
     }
@@ -90,7 +95,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 intent.putExtra("idProduct", id);
                 itemView.getContext().startActivity(intent);
             });
-
+            SharedPreferences sharedPreferences = itemView.getContext().getSharedPreferences("USER", MODE_PRIVATE);
+            String role = sharedPreferences.getString("role", "");
+            if (role.equals(ROLE_ADMIN)){
+                btnBuy.setVisibility(View.GONE);
+            }
             btnBuy.setOnClickListener(v -> {
                 DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference().child("Carts").child(userId);
                 OderDetail oderDetail = new OderDetail();

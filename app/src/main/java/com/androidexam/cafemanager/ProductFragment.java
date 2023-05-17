@@ -14,12 +14,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.androidexam.cafemanager.adapter.ProductAdapter;
 import com.androidexam.cafemanager.databinding.FragmentProductBinding;
 import com.androidexam.cafemanager.model.Product;
+import com.androidexam.cafemanager.model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +34,7 @@ import java.util.List;
 
 
 public class ProductFragment extends Fragment {
+    public final static String ROLE_ADMIN = "Manage";
 
     private FragmentProductBinding binding;
     private ProductAdapter productAdapter;
@@ -71,6 +74,8 @@ public class ProductFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
         String uid = sharedPreferences.getString("uid", "");
 
+        checkAdmin(uid);
+
         productAdapter = new ProductAdapter(productList, uid);
         binding.rcvProducts.setAdapter(productAdapter);
         Spinner spnProductTypes = binding.btnFilter;
@@ -85,6 +90,26 @@ public class ProductFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void checkAdmin(String uid) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+        userRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    User user = snapshot.getValue(User.class);
+                    if (user.getRole().equals(ROLE_ADMIN)) {
+                        binding.btnAddProduct.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
