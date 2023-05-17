@@ -9,14 +9,14 @@
 
     <EditText
         android:id="@+id/et_search"
-        android:layout_width="371dp"
-        android:layout_height="62dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Search"
         android:inputType="text"
         android:maxLines="1"
         android:padding="16dp"
+        android:layout_marginRight="90dp"
         android:textColor="@android:color/black"
-
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -38,14 +38,18 @@
 
 
         app:layout_constraintBottom_toTopOf="@+id/rv_staff"
-        app:layout_constraintEnd_toEndOf="parent"
-
+        app:layout_constraintStart_toEndOf="@+id/et_search"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/purple_500" />
 
+    <Spinner
+        android:id="@+id/btnFilter"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintBottom_toTopOf="@+id/rv_staff"
 
-
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/purple_500" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

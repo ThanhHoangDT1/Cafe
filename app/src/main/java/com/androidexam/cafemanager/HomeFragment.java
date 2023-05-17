@@ -1,6 +1,10 @@
 package com.androidexam.cafemanager;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.androidexam.cafemanager.ProductFragment.ROLE_ADMIN;
+
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +37,8 @@ public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
     private List<Oder> oderList;
     private BillAdapter billAdapter;
+    private String role;
+    private String uid;
 
 
     @Override
@@ -52,6 +58,9 @@ public class HomeFragment extends Fragment {
         billAdapter = new BillAdapter(oderList);
         binding.rcvOrders.setAdapter(billAdapter);
 
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER", MODE_PRIVATE);
+        role = sharedPreferences.getString("role", "");
+        uid = sharedPreferences.getString("uid", "");
         setDateTv();
         try {
             getAllOrders();
@@ -97,9 +106,11 @@ public class HomeFragment extends Fragment {
                         Date dateEnd = format.parse(endDate);
 
                         if (billCreate.after(dateStart) && billCreate.before(dateEnd)) {
-                            oderList.add(bill);
+                            if (role.equals(ROLE_ADMIN))
+                                oderList.add(bill);
+                            else if (bill.getIdStaff().equals(uid))
+                                oderList.add(bill);
                         }
-
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

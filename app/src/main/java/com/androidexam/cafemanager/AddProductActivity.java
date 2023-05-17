@@ -1,11 +1,16 @@
 package com.androidexam.cafemanager;
 
+
+import static com.androidexam.cafemanager.ProductFragment.ROLE_ADMIN;
+
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -42,7 +47,7 @@ public class AddProductActivity extends AppCompatActivity {
             "Sinh Tố"
     ));
     private String idProduct;
-    private Uri uriImageFromIntent;
+    private Uri uriImageFromIntent=null;
     private boolean statusUpdate = false;
 
     private ActivityAddProductBinding binding;
@@ -58,20 +63,29 @@ public class AddProductActivity extends AppCompatActivity {
 
         setDataSpinner();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
+        String role = sharedPreferences.getString("role", "");
 
+        checkRole(role);
         if (!TextUtils.isEmpty(idProduct)) {
             binding.btnAdd.setText("Sửa");
             loadDataProduct();
             enableComponents(false);
-            clickUpdate();
-            clickDelete();
-
         } else {
             clickAdd();
         }
-        clickImage();
         clickCancel();
     }
+
+    private void checkRole(String role) {
+        if (role.equals(ROLE_ADMIN)) {
+            binding.layoutEdit.setVisibility(View.VISIBLE);
+            clickImage();
+            clickUpdate();
+            clickDelete();
+        }
+    }
+
 
     private void clickDelete() {
         binding.layoutProduct.setOnLongClickListener(v -> {
@@ -107,7 +121,11 @@ public class AddProductActivity extends AppCompatActivity {
                 loadDataProduct();
                 enableComponents(false);
                 uriImageFromIntent = null;
+                statusUpdate=false;
             } else {
+                finish();
+            }
+            if(!statusUpdate){
                 finish();
             }
         });
@@ -125,13 +143,17 @@ public class AddProductActivity extends AppCompatActivity {
             if (statusUpdate) {
                 Product updateProduct = getProduct();
                 if (updateProduct != null) {
-                    DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference("Products");
-                    productsRef.child(idProduct).setValue(updateProduct);
+                    DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference("Products").child(idProduct);
+                    productsRef.child("name").setValue(updateProduct.getName());
+                    productsRef.child("price").setValue(updateProduct.getPrice());
+                    productsRef.child("category").setValue(updateProduct.getCategory());
+                    productsRef.child("description").setValue(updateProduct.getDescription());
                     saveImage(idProduct);
                     enableComponents(false);
                     statusUpdate = false;
                     Toast.makeText(this, "Cập Nhật Sản Phẩm Thành Công", Toast.LENGTH_SHORT).show();
                     binding.btnAdd.setText("Sửa");
+                    finish();
                 }
             } else {
                 enableComponents(true);
@@ -248,6 +270,11 @@ public class AddProductActivity extends AppCompatActivity {
                 });
 
         binding.imgProduct.setOnClickListener(view -> {
+            if (!statusUpdate) {
+                enableComponents(true);
+                statusUpdate = true;
+                binding.btnAdd.setText("Lưu");
+            }
             imagePickerLauncher.launch("image/*");
         });
     }
