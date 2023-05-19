@@ -6,8 +6,6 @@ public class OderDetail {
     private String idProduct;
     private int quantity;
     private long price;
-
-
     private String note;
 
     public OderDetail() {

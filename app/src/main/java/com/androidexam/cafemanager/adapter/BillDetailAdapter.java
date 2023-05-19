@@ -77,7 +77,7 @@ public class BillDetailAdapter extends RecyclerView.Adapter<BillDetailAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imgNote;
+
         TextView nameProduct;
         TextView priceProduct;
         TextView quantityProduct;
@@ -90,9 +90,7 @@ public class BillDetailAdapter extends RecyclerView.Adapter<BillDetailAdapter.Vi
             nameProduct = itemView.findViewById(R.id.tv_pro_name_order);
             priceProduct = itemView.findViewById(R.id.tv_pro_price_order);
             quantityProduct = itemView.findViewById(R.id.tv_pro_quantity_order);
-            imgNote.setOnClickListener(v->{
 
-            });
         }
     }
 }
